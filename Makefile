@@ -8,10 +8,11 @@
 %.pdf : %.dtx polytable.sty force
 	pdflatex $<
 
-release : force
+release : force polytable.pdf
 	mkdir polytable
 	cp polytable.dtx polytable
 	cp polytable.ins polytable
+	cp polytable.pdf polytable
 	cp README        polytable
 	tar cvzf polytable.tar.gz polytable/*
 

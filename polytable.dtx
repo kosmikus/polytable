@@ -2,18 +2,21 @@
 %<*driver>
 \ProvidesFile{polytable.drv}
 \documentclass{ltxdoc}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
 \usepackage[info]{polytable}
 \begin{document}
    \DocInput{polytable.dtx}
 \end{document}
 %</driver>
 %
-% Copyright (C) 2003--2013 by Andres Loeh
+% Copyright (C) 2003--2020 by Andres Loeh
 %
 % \fi
 %
 % \ProvidesFile{polytable.dtx}
-%   [2013/07/08 v0.8.5 `polytable' package (Andres Loeh)]
+%   [2020/07/14 v0.8.6 `polytable' package (Andres Loeh)]
 % \GetFileInfo{polytable.dtx}
 %
 % \title{The \textsf{polytable} package}
@@ -53,6 +56,7 @@
 % \changes{v0.8.4}{2009/11/01}{Make ptb output more stable.}
 % \changes{v0.8.5}{2013/07/18}{Work around lazylist name clash
 %                              with unicode-math.}
+% \changes{v0.8.6}{2020/07/14}{Fix bug with column command redefinitions.}
 %
 % \section{Introduction}
 %
@@ -83,10 +87,10 @@
 % The strength of this approach is that it implicitly handles
 % cases where different lines have different alignment properties.
 % Not all column names have to occur in all lines.
-% 
+%
 % \section{A complete example}
 %
-% Figure~\ref{tab:example} 
+% Figure~\ref{tab:example}
 % is an example that is designed to show the
 % capabilities of this package. In particular, it is \emph{not}
 % supposed to look beautiful.
@@ -95,7 +99,7 @@
 % \centering
 % \begin{ptboxed}
 % \defaultcolumn{l|}\column{.}{|l|}
-% \> left 
+% \> left
 % \=3 first of three \> second of three \> third of three
 % \=r right \\
 % \defaultcolumn{r|}\> left \=2 middle 1/2 \> middle 2/2 \=r right \\
@@ -112,8 +116,8 @@
 % some text on the left and on the right, but the middle part
 % follows two different patterns: the first and the third line
 % have three middle columnss that should be aligned, the second
-% and the fourth line have two (right-aligned) middle columns 
-% that should be aligned, but otherwise independent of the three 
+% and the fourth line have two (right-aligned) middle columns
+% that should be aligned, but otherwise independent of the three
 % middle columns in the other lines.
 %
 % Vertical bars are used to clarify where one column ends and
@@ -131,7 +135,7 @@
 % \begin{verbatim}
 % \begin{ptboxed}
 % \defaultcolumn{l|}\column{.}{|l|}
-% \> left 
+% \> left
 % \=3 first of three \> second of three \> third of three
 % \=r right \\
 % \defaultcolumn{r|}\> left \=2 middle 1/2 \> middle 2/2 \=r right \\
@@ -144,7 +148,7 @@
 % First, columns are declared, including the vertical lines.
 % Note that there is a final column |end| being declared
 % that is only used as the end column in the |\fromto| statements.
-% A future version of this package 
+% A future version of this package
 % will probably get rid of the need to define
 % such a column.
 % After the column definitions, the lines are typeset by a
@@ -265,7 +269,7 @@
 %
 % With lhs2\TeX, there is now a preprocessor available that preserves
 % the source code's internal alignment by mapping the output onto
-% \textsf{polytable}'s environments. 
+% \textsf{polytable}'s environments.
 % Figure~\ref{tab:haskell} is an example of how
 % the output of lhs2\TeX\ might look like.
 %
@@ -308,7 +312,7 @@
 % \column{rel}{c}
 % \column{rhs}{l}
 % \>[left] \CLASS\ (\Eq\TA)\Rightarrow\Ord\TA\WHERE \\
-% \>[left] \qquad\ 
+% \>[left] \qquad\
 % \>[body] \HsVar{compare}
 % \>[rel]  ::
 % \>[rhs]  \TA\rightarrow\TA\rightarrow\HsCon{Ordering} \\
@@ -402,7 +406,7 @@
 % \textsf{lazylist} package, which provides an implementation of
 % the lambda calculus using fully expandable control sequences.
 % Unfortunately, |lazylist.sty| is not included in most common
-% \TeX\ distributions, so you might need to fetch it from CTAN 
+% \TeX\ distributions, so you might need to fetch it from CTAN
 % separately.
 %
 % \section{Reference}
@@ -420,7 +424,7 @@
 % must be declared.
 %
 % \DescribeMacro{\defaultcolumn}
-% Using a statement of the form 
+% Using a statement of the form
 % |\defaultcolumn{|\meta{spec}|}|, implicit columns can
 % be activated. All undefined columns that are encountered
 % will be assumed to have format string \meta{spec}.
@@ -438,7 +442,7 @@
 % The environment |pboxed|
 % typesets the material in boxes of the calculated length, but in
 % normal paragraph mode. The advantage is that
-% there can be page breaks within the table. 
+% there can be page breaks within the table.
 % Note that you should start a new (probably nonindented)
 % paragraph before beginning a |pboxed|. All lines that a |pboxed|
 % produces are of equal length, so it should be possible to center
@@ -448,7 +452,7 @@
 % pre-wrapped in a |tabular| or |array| environment,
 % respectively, and
 % thus not page-breakable but less fragile (or should I just
-% say: easier to use) than the unwrapped |pboxed|. 
+% say: easier to use) than the unwrapped |pboxed|.
 % With those, there
 % is no need for |ptabular| and |parray| anymore --
 % which were directly based on (and translated into) usual
@@ -485,7 +489,7 @@
 % document, and destroy your layout.
 %
 % \DescribeMacro{\column}
-% With |\column[|\meta{dimen}|]{|\meta{columnid}|}{|\meta{spec}|}|, 
+% With |\column[|\meta{dimen}|]{|\meta{columnid}|}{|\meta{spec}|}|,
 % a new column
 % \meta{columnid} is specified. The name of the column can be
 % any sequence of alphanumerical characters. The \meta{spec} is
@@ -493,12 +497,12 @@
 % the same constructs that can be used in format strings of normal
 % tables or arrays.
 % However, it must only contain the description for \emph{one}
-% column. 
+% column.
 %
-% As long as the save/restore feature (explained below) is not used, 
+% As long as the save/restore feature (explained below) is not used,
 % |\column| definitions are local to one table.
 % One can define a column multiple times within one table:
-% a warning will be produced, 
+% a warning will be produced,
 % and the second format string will be used for the complete table.
 %
 % Columns must be defined before use when implicit columns using
@@ -565,7 +569,7 @@
 %
 % \DescribeMacro{\\}
 % \DescribeMacro{\nextline}
-% The command |\\| (or, now deprecated, |\nextline|) ends one line 
+% The command |\\| (or, now deprecated, |\nextline|) ends one line
 % and begins the next.
 % There is no need to end the last line. One can pass an optional
 % argument, as in |\\[|\meta{dimen}|]|, that will add
@@ -576,11 +580,11 @@
 % The contents of the table are processed multiple times because
 % the widths of the entries are measured. Global assignments that
 % modify registers and similar things can thus result in unexpected
-% behaviour. 
+% behaviour.
 % New in v0.7: \LaTeX\ counters (i.e., counters defined by
 % |\newcounter|) are protected now. They will be reset after
 % each of the trial runs.
-% 
+%
 % \subsection{Saving column width information}
 %
 % Sometimes, one might want to reuse not only the same column, but
@@ -654,7 +658,7 @@
 % \fromto{rel}{rhs}{::}
 % \fromto{rhs}{end}{\TA\rightarrow\TA\rightarrow\HsCon{Bool}}
 % \\[1ex]
-% \fromto{body}{end}{\mbox{--- Minimal complete definition: 
+% \fromto{body}{end}{\mbox{--- Minimal complete definition:
 %   $(\leq)$ or $\HsVar{compare}$}}
 % \\
 % \fromto{body}{end}{\mbox{--- using $\HsVar{compare}$ can be more efficient
@@ -667,7 +671,7 @@
 % of the class methods have default definitions. First, we can
 % define $\HsVar{compare}$ in terms of $(\leq)$. The result type
 % of $\HsVar{compare}$ is an $\HsCon{Ordering}$, a type consisting
-% of only three values: $\HsCon{EQ}$ for ``equality'', 
+% of only three values: $\HsCon{EQ}$ for ``equality'',
 % $\HsCon{LT}$ for ``less than'', and $\HsCon{GT}$ for ``greater
 % than''.
 %
@@ -749,7 +753,7 @@
 %<*package>
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{polytable}%
-   [2013/07/18 v0.8.5 `polytable' package (Andres Loeh)]
+   [2020/07/14 v0.8.6 `polytable' package (Andres Loeh)]
 %    \end{macrocode}
 % New in v0.7.2:
 % The \textsf{amsmath} package clashes with \textsf{lazylist}:
@@ -864,7 +868,7 @@
 % \end{macro}
 % \end{macro}
 % \end{macro}
-% 
+%
 % \begin{macro}{\PT@debug}
 % \begin{macro}{\PT@info}
 % \begin{macro}{\PT@debug@}
@@ -909,7 +913,7 @@
   \else
     \PT@aligndim@#1#2#3\space\space\space\space\space\space\space\space\@@
   \fi}
-    
+
 \def\PT@aligndim@#1.#2#3#4#5#6#7#8#9\@@{%
   \ifnum#1<10 \space\fi
   \ifnum#1<100 \space\fi
@@ -964,7 +968,7 @@
 \def\PT@listopmacro #1#2#3% #1 #3 to the list #2
   {\def\PT@temp{#1{#3}}%
    \expandafter\expandafter\expandafter
-     \def\expandafter\expandafter\expandafter 
+     \def\expandafter\expandafter\expandafter
      #2\expandafter\expandafter\expandafter
      {\expandafter\PT@temp\expandafter{#2}}}
 
@@ -1156,7 +1160,7 @@
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\PT@getwidths}
-% Here, we make as many test runs as are necessary to 
+% Here, we make as many test runs as are necessary to
 % determine the correct column widths.
 %    \begin{macrocode}
 \def\PT@getwidths
@@ -1210,7 +1214,7 @@
 % After the first run, we print extra information.
 % We use the contents of the macro |\column| to check
 % whether we are in the first run, because it will be
-% reset below for all other runs to do nothing.   
+% reset below for all other runs to do nothing.
 %    \begin{macrocode}
    \ifx\column\PT@otherrun@column
    \else
@@ -1225,7 +1229,16 @@
 % Therefore, we make sure that the |\column| command
 % won't do much in the other runs. Also, saving and
 % restoring columns is no longer needed.
+%
+% Note that redefining just |\column| or just
+% |\PT@firstrun@column| is not enough. In the former
+% case, on the next trial run, |\PT@getwidths| will
+% restore the old definition. In the latter case, if
+% there is no additional trial run, the typesetting
+% run will be performed with the wrong definition.
+% TODO: I think similar issues exist with saving/restoring?
 %    \begin{macrocode}
+   \let\column             \PT@otherrun@column
    \let\PT@firstrun@column \PT@otherrun@column
    \let\savecolumns        \PT@gobbleoptional
    \let\restorecolumns     \PT@gobbleoptional
@@ -1345,7 +1358,7 @@
 %    \end{macrocode}
 % The array environments keep each line in a group; therefore
 % |\PT@resetcolumn|, when executed during the linebreak, will
-% not affect the current column counters. By having 
+% not affect the current column counters. By having
 % |\PT@resetcolumn| before entering the environment, we ensure
 % that the group reset will have the correct effect anyway.
 %    \begin{macrocode}
@@ -1353,7 +1366,7 @@
 %    \end{macrocode}
 % Now we start the tabular environment with the
 % computed preamble. We redefine the |\\| to whatever
-% the environment dictates. 
+% the environment dictates.
 %    \begin{macrocode}
    \PT@begin%
 %    \end{macrocode}
@@ -1362,7 +1375,7 @@
    \the\PT@toks
    \PT@fill% new in 0.7.3: balance the last line
 %    \end{macrocode}
-% End the array, close the group, close the environment. 
+% End the array, close the group, close the environment.
 % We are done!
 %    \begin{macrocode}
    \PT@finalize% finalize the queue (possibly close file)
@@ -1384,7 +1397,7 @@
 % The macro |\PT@from| is bound to |\=| in a polytable environment,
 % and used to move to the named column specified by its argument. The
 % previous column is closed. The variant |\PT@fromopt| is bound to
-% |\>| and takes an optional argument instead of a mandatory, which defaults 
+% |\>| and takes an optional argument instead of a mandatory, which defaults
 % to the current column name followed by a single dot |.|. We use an
 % empty default which is then redefined to make it easier for the
 % user to use the default definition (TODO: explain better).
@@ -1590,7 +1603,7 @@
 %    \begin{macrocode}
    \@ifundefined{PT@col@#2.max}%
       {\@namedef{PT@col@#2.max}{#1}%
-       \expandafter\let\csname PT@col@#2.trusted\endcsname\PT@true}{}%  
+       \expandafter\let\csname PT@col@#2.trusted\endcsname\PT@true}{}%
    \ignorespaces}
 %    \end{macrocode}
 % \end{macro}
@@ -1809,7 +1822,7 @@
 % \end{macro}
 %
 % \begin{macro}{\PT@TeXif}
-% This is an improved version of \textsf{lazylist}'s |\TeXif|. 
+% This is an improved version of \textsf{lazylist}'s |\TeXif|.
 % It does have an additional |\relax| to terminate the condition.
 % The |\relax| is gobbled again to keep it fully expandable.
 %    \begin{macrocode}
@@ -1871,7 +1884,7 @@
        \edef\PT@currentcol{\Head{\Tail\PT@sortedlist}}%
      \fi
      \edef\PT@currentcol@{\PT@StripColumn\PT@currentcol}%
-     \PT@typeout@{adding implicit fromto at eol from \PT@currentcol@ 
+     \PT@typeout@{adding implicit fromto at eol from \PT@currentcol@
                                          \space to \PT@lastcol@}%
      \PT@expanded{\PT@expanded\fromto\PT@currentcol@}\PT@lastcol@
    \fi
@@ -1958,8 +1971,8 @@
 % we want it set normally dugin |\PT@preparescan|.
 %    \begin{macrocode}
 \def\PT@preparescan#1#2%
-% First, we check that both columns are defined. This will 
-% actually define the columns if implicit column definitions are 
+% First, we check that both columns are defined. This will
+% actually define the columns if implicit column definitions are
 % enabled.
 %    \begin{macrocode}
   {\PT@checkcoldefined{#1}%
@@ -1996,7 +2009,7 @@
 % We split the preamble at the position of the |\@sharp|, using
 % some tricks to make sure that there really is precisely one
 % occurrence of |\@sharp| in the resulting preamble code, and
-% producing an error otherwise. The splitting defines 
+% producing an error otherwise. The splitting defines
 % |\PT@pre@preamble| and |\PT@post@preamble|. With those and
 % the computed |\PT@colwidth|, the scan is successfully prepared.
 %    \begin{macrocode}
@@ -2078,10 +2091,10 @@
 % can check whether all untrusted widths are conditionally trusted.
 %
 % We write the final, the maximum widths, into the auxiliary file.
-% We perform the 
+% We perform the
 % write operation when we are sure that a specific set is
 % no longer used. This is the case when we save a new set under the
-% same name, or at the end of the document. The command 
+% same name, or at the end of the document. The command
 % |\PT@verifywidths| takes care of this procedure.
 % This command will also check if a rerun is necessary, and issue
 % an appropriate warning if that should be the case.
@@ -2292,7 +2305,7 @@
    \PT@typeout@{Verification for #2 successful.}}
 %    \end{macrocode}
 % \end{macro}
-%   
+%
 % \begin{macro}{\PT@save@table}
 % Here we prepare to write maximum column widths to the
 % |.aux| file.
